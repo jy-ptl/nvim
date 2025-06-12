@@ -35,6 +35,7 @@ return {
         c = { 'clang_format' },
         cpp = { 'clang_format' },
         go = { 'goimports', 'gofumpt' },
+        java = { 'google-java-format' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
