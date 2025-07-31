@@ -224,7 +224,6 @@ return {
             },
           },
         },
-        jdtls = {},
         -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -271,7 +270,7 @@ return {
         'clang-format', -- Used to format c code
         'goimports',
         'gofumpt',
-        'google-java-format',
+        'jdtls',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -289,83 +288,6 @@ return {
           end,
         },
       }
-      -- Java setup with jdtls
-      vim.api.nvim_create_autocmd('FileType', {
-        pattern = 'java',
-        callback = function()
-          local jdtls = require 'jdtls'
-          local home = os.getenv 'HOME'
-          local root_markers = { '.git', 'mvnw', 'gradlew', 'pom.xml', 'build.gradle' }
-          local root_dir = require('jdtls.setup').find_root(root_markers)
-          local is_maven_project = vim.fn.filereadable(root_dir .. '/pom.xml') == 1
-
-          local workspace_path = home .. '/Code/java/workspace/' .. vim.fn.fnamemodify(root_dir, ':p:h:t')
-
-          local config = {
-            cmd = {
-              'jdtls',
-              '--jvm-arg=-javaagent:' .. home .. '/.local/share/nvim/mason/packages/jdtls/lombok.jar',
-              '-data',
-              workspace_path,
-            },
-            root_dir = root_dir,
-            capabilities = capabilities,
-            settings = {
-              java = {
-                configuration = {
-                  updateBuildConfiguration = 'interactive',
-                },
-                format = {
-                  enabled = false,
-                },
-                autobuild = {
-                  enabled = true,
-                },
-                compile = {
-                  onSave = {
-                    enabled = not is_maven_project,
-                  },
-                  outputPath = not is_maven_project and 'out' or nil,
-                },
-              },
-            },
-            init_options = {
-              bundles = {},
-            },
-          }
-
-          jdtls.start_or_attach(config)
-
-          if not is_maven_project then
-            local function compile_only()
-              local filepath = vim.fn.expand '%:p'
-              local outdir = root_dir .. '/out'
-              vim.fn.mkdir(outdir, 'p')
-
-              local compile_cmd = {
-                'javac',
-                '-d',
-                outdir,
-                filepath,
-              }
-
-              vim.fn.jobstart(compile_cmd, {
-                on_exit = function(_, code)
-                  if code == 0 then
-                    vim.notify('Compilation succeeded', vim.log.levels.INFO)
-                  else
-                    vim.notify('Compilation failed', vim.log.levels.ERROR)
-                  end
-                end,
-              })
-            end
-            vim.api.nvim_create_autocmd('BufWritePost', {
-              pattern = '*.java',
-              callback = compile_only,
-            })
-          end
-        end,
-      })
     end,
   },
 }

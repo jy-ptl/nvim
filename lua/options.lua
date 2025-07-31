@@ -86,3 +86,20 @@ end, {})
 vim.api.nvim_create_user_command('Clean', function()
   vim.cmd '!make clean'
 end, {})
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'java',
+  callback = function()
+    vim.bo.expandtab = true -- use spaces, not tabs
+    vim.bo.shiftwidth = 4
+    vim.bo.tabstop = 4
+    vim.bo.softtabstop = 4
+  end,
+})
+
+vim.cmd [[
+augroup jdtls_lsp
+    autocmd!
+    autocmd FileType java lua require'custom.plugins.jdtls'.setup()
+augroup end
+]]
