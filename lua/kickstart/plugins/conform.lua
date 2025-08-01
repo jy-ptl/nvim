@@ -35,6 +35,27 @@ return {
         c = { 'clang_format' },
         cpp = { 'clang_format' },
         go = { 'goimports', 'gofumpt' },
+        javascript = { 'prettier' },
+        typescript = { 'prettier' },
+        javascriptreact = { 'prettier' },
+        typescriptreact = { 'prettier' },
+      },
+
+      formatters = {
+        prettier = {
+          command = 'prettier',
+          args = {
+            '--stdin-filepath',
+            '$FILENAME',
+            '--tab-width',
+            '4',
+            '--use-tabs',
+            'false',
+            '--config-precedence',
+            'cli-override',
+          },
+          stdin = true,
+        },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --

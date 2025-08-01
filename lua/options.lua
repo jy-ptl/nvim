@@ -88,7 +88,7 @@ vim.api.nvim_create_user_command('Clean', function()
 end, {})
 
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'java',
+  pattern = { 'java', 'typescript', 'typescriptreact' },
   callback = function()
     vim.bo.expandtab = true -- use spaces, not tabs
     vim.bo.shiftwidth = 4

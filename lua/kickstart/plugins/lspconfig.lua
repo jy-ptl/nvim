@@ -232,8 +232,35 @@ return {
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
+        ts_ls = {},
         --
+        eslint = {
+          settings = {
+            workingDirectory = { mode = 'auto' },
+          },
+          on_attach = function(client, bufnr)
+            -- Optional: fix lint on save
+            vim.api.nvim_create_autocmd('BufWritePre', {
+              buffer = bufnr,
+              command = 'EslintFixAll',
+            })
+
+            -- Optional: keybinding
+            vim.keymap.set('n', '<leader>ef', ':EslintFixAll<CR>', { buffer = bufnr, desc = 'ESLint Fix All' })
+          end,
+        },
+
+        tailwindcss = {
+          filetypes = {
+            'html',
+            'css',
+            'scss',
+            'javascript',
+            'javascriptreact',
+            'typescript',
+            'typescriptreact',
+          },
+        },
 
         lua_ls = {
           -- cmd = { ... },
@@ -271,6 +298,10 @@ return {
         'goimports',
         'gofumpt',
         'jdtls',
+        'prettier',
+        'ts_ls',
+        'eslint',
+        'tailwindcss',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
