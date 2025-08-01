@@ -100,6 +100,6 @@ vim.api.nvim_create_autocmd('FileType', {
 vim.cmd [[
 augroup jdtls_lsp
     autocmd!
-    autocmd FileType java lua require'custom.plugins.jdtls'.setup()
+    autocmd FileType java lua require'custom.lsp.jdtls'.setup()
 augroup end
 ]]
