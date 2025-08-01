@@ -302,6 +302,7 @@ return {
         'ts_ls',
         'eslint',
         'tailwindcss',
+        'xmlformatter',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
