@@ -39,6 +39,7 @@ return {
         typescript = { 'prettier' },
         javascriptreact = { 'prettier' },
         typescriptreact = { 'prettier' },
+        xml = { 'xmlformatter' },
       },
 
       formatters = {
@@ -56,19 +57,17 @@ return {
           },
           stdin = true,
         },
-        xml = { 'xmlformatter' },
-        -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
-        --
-        -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
-      },
-      formatters = {
         xmlformatter = {
           command = 'xmlformatter',
           args = { '--indent', '4', '--indent-with-tabs', 'no' },
           stdin = true,
         },
+
+        -- Conform can also run multiple formatters sequentially
+        -- python = { "isort", "black" },
+        --
+        -- You can use 'stop_after_first' to run the first available formatter from the list
+        -- javascript = { "prettierd", "prettier", stop_after_first = true },
       },
     },
   },
